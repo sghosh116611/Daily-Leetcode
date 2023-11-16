@@ -9,9 +9,6 @@ class Solution {
             }
 
             if(num != major)
-                if(count == 0)
-                    count = 0;
-                else
                     count--;
             else
                 count++;
