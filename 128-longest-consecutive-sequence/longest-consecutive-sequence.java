@@ -8,7 +8,6 @@ class Solution {
         }
 
         for(Integer num : set){
-            
             if(set.contains(num - 1))   continue;
             else{
                 int temp = num;
