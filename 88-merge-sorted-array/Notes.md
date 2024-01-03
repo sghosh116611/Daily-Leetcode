@@ -1,0 +1,1 @@
+<h2>merge-sorted-array Notes</h2><hr>1. We need to start from end
