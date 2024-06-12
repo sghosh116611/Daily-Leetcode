@@ -1,22 +1,18 @@
 class Solution {
     public int majorityElement(int[] nums) {
-        int major = nums[0];
-        int count = 1;
-        for(int i = 1; i < nums.length; i++){
-            System.out.println(major);
-            if(major == nums[i])
+        int count = 0;
+        int maj = nums[0];
+        for(int num : nums){
+            if(num == maj)
                 count++;
-            else{
-            System.out.println(nums[i]);
-            count--;
-            }
-            System.out.println(count);
-            if(count == 0){
-                major = nums[i];
+            else 
+                count--;
+            if(count <= 0){
+                maj = num;
                 count = 1;
             }
+            System.out.println(count);
         }
-
-        return major;
+        return maj;
     }
 }
