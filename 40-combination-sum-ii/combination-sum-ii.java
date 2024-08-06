@@ -13,13 +13,15 @@ class Solution {
             return;
         }
         for(int i = idx; i < nums.length; i++){
-            if(i > idx && nums[i] == nums[i - 1]) continue;
-            if(nums[i] > target) break;
+            if(i != idx && nums[i] == nums[i - 1]) continue;
 
             // Take
-            ds.add(nums[i]);
-            func(i + 1, nums, target - nums[i], ans, ds);
-            ds.remove(ds.size() - 1);
+            if(nums[i] <= target){
+                ds.add(nums[i]);
+                func(i + 1, nums, target - nums[i], ans, ds);
+                ds.remove(ds.size() - 1);
+            }
+            
 
             // Not take
             //func(i + 1, nums, target, ans, ds);
