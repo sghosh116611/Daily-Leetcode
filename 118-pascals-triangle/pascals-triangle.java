@@ -2,17 +2,17 @@ class Solution {
     public List<List<Integer>> generate(int numRows) {
         List<List<Integer>> result = new ArrayList<>();
         for(int i = 0; i < numRows; i++){
-            List<Integer> temp = new ArrayList<>();
+            List<Integer> row = new ArrayList<>();
             for(int j = 0; j <= i; j++){
-                if(j == 0 || j == i)
-                    temp.add(1);
-                else{
-                    System.out.println(i + " " + j);
-                    temp.add(result.get(i - 1).get(j - 1) + result.get(i - 1).get(j));
+                if(j == 0 || j == i){
+                    row.add(1);
+                }else{
+                    row.add(result.get(i - 1).get(j - 1) + result.get(i - 1).get(j));
                 }
             }
-            result.add(temp);
+            result.add(row);
         }
+
         return result;
     }
 }
