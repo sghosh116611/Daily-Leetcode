@@ -1,24 +1,24 @@
 class Solution {
     public boolean searchMatrix(int[][] matrix, int target) {
+        int i = 0, j = 0;
         int m = matrix.length;
         int n = matrix[0].length;
 
-        int row = m - 1;
-        while(row >= 0){
-            if(target < matrix[row][0])
-                row--;
-            else
-                break;
+        while(i < m && j < n){
+            if(matrix[i][n - 1] < target){
+                System.out.println(i);
+                i++;
+            }
+            else{
+                System.out.println(i);
+                while(j < n){ 
+                    System.out.println("j ===" + j);
+                    if(matrix[i][j] == target)
+                        return true;
+                    j++;
+                }
+            }
         }
-
-        if(row < 0)
-            return false;
-
-        for(int i = 0; i < n; i++){
-            if(matrix[row][i] == target)
-                return true;
-        }
-
         return false;
     }
 }
