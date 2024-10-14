@@ -11,41 +11,33 @@
  */
 public class Solution {
     public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
-        ListNode p1 = headA;
-        ListNode p2 = headB;
+        int l1 = 0, l2 = 0;
 
-        ListNode newP1 = headA;
-        ListNode newP2 = headB;
-
-        int c1 = 0, c2 = 0;
-
-        while(p1.next != null){
-            p1 = p1.next;
-            c1++;
+        for(ListNode temp = headA; temp != null; temp = temp.next){
+            l1++;
         }
 
-        while(p2.next != null){
-            p2 = p2.next;
-            c2++;
+        for(ListNode temp = headB; temp != null; temp = temp.next){
+            l2++;
         }
 
-        if(c1 > c2){
-            int diff = c1 - c2;
-            while(diff-- > 0){
-                newP1 = newP1.next;
-            }
+        System.out.println(l1 + " " + l2);
+        ListNode tempA = headA;
+        ListNode tempB = headB;
+
+        if(l1 > l2){
+            for(int i = 1; i <= l1 - l2 && tempA != null; tempA = tempA.next, i++);
         }else{
-            int diff = c2 - c1;
-            while(diff-- > 0){
-                newP2 = newP2.next;
-            }
+            for(int i = 1; i <= l2 - l1 && tempB != null; tempB = tempB.next, i++);
         }
 
-        while(newP1 != null && newP2 != null){
-            if(newP1 == newP2)
-                return newP1;
-            newP1 = newP1.next;
-            newP2 = newP2.next;
+        System.out.println(tempA.val + " " + tempB.val);
+
+        while(tempA != null && tempB != null){
+            if(tempA == tempB)
+                return tempA;
+            tempA = tempA.next;
+            tempB = tempB.next;
         }
 
         return null;
