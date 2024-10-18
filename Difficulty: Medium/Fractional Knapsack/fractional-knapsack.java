@@ -1,72 +1,76 @@
 //{ Driver Code Starts
 import java.io.*;
-import java.lang.*;
 import java.util.*;
-
-class Item {
-    int value, weight;
-
-    Item(int x, int y) {
-        this.value = x;
-        this.weight = y;
-    }
-}
 
 class GfG {
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int t = Integer.parseInt(br.readLine().trim());
+
         while (t-- > 0) {
-            String inputLine[] = br.readLine().trim().split(" ");
-            int n = Integer.parseInt(inputLine[0]);
-            int w = Integer.parseInt(inputLine[1]);
-            Item[] arr = new Item[n];
-            inputLine = br.readLine().trim().split(" ");
-            for (int i = 0, k = 0; i < n; i++) {
-                arr[i] = new Item(Integer.parseInt(inputLine[k++]),
-                                  Integer.parseInt(inputLine[k++]));
+            // Read values array
+            String[] valueInput = br.readLine().trim().split(" ");
+            List<Integer> values = new ArrayList<>();
+            for (String s : valueInput) {
+                values.add(Integer.parseInt(s));
             }
-            System.out.println(
-                String.format("%.6f", new Solution().fractionalKnapsack(w, arr, n)));
+
+            // Read weights array
+            String[] weightInput = br.readLine().trim().split(" ");
+            List<Integer> weights = new ArrayList<>();
+            for (String s : weightInput) {
+                weights.add(Integer.parseInt(s));
+            }
+
+            // Read the knapsack capacity
+            int w = Integer.parseInt(br.readLine().trim());
+
+            // Call fractionalKnapsack function and print result
+            System.out.println(String.format(
+                "%.6f", new Solution().fractionalKnapsack(values, weights, w)));
         }
     }
 }
+
 // } Driver Code Ends
 
 
-/*
-class Item {
-    int value, weight;
-    Item(int x, int y){
-        this.value = x;
-        this.weight = y;
-    }
-}
-*/
-
+// User function Template for Java
 class Solution {
     // Function to get the maximum total value in the knapsack.
-    double fractionalKnapsack(int w, Item arr[], int n) {
-        Arrays.sort(arr, (Item i1, Item i2) -> {
-            double ratio1 = (double) i1.value / i1.weight;
-            double ratio2 = (double) i2.value / i2.weight;
-            
-            return Double.compare(ratio2, ratio1);
-        });
-        double profit = 0.0; int bagWeight = 0;
-        for(Item item: arr){
-            if(bagWeight + item.weight <= w){
-                profit += item.value;
-                bagWeight += item.weight;
+    double fractionalKnapsack(List<Integer> values, List<Integer> weights, int w) {
+        // code here
+        int n = values.size();
+        Item[] items = new Item[n];
+        for(int i = 0; i < n; i++){
+            Item item = new Item();
+            item.weight = weights.get(i);
+            item.value = values.get(i);
+            items[i] = item;
+        }
+        Arrays.sort(items, (Item i1, Item i2) -> Double.compare((double) i2.value / i2.weight, (double) i1.value / i1.weight));
+        
+        double totalValue = 0, totalWeight = w;
+        for(int i = 0; i < n; i++){
+            if(totalWeight > 0){
+                Item item = items[i];
+                if(item.weight < totalWeight){
+                    totalValue += item.value;
+                    totalWeight -= item.weight;
+                }else{
+                    totalValue += ((double)item.value / (double)item.weight) * (double)totalWeight;
+                    totalWeight = 0;
+                }
             }else{
-                profit += ((double)item.value/(double)item.weight) * (double)(w - bagWeight);
                 break;
             }
-            
         }
-        return profit;
+        return totalValue;
     }
     
-    //value= [10,60] wieght = [20,100]
+    private class Item{
+        public int weight;
+        public int value;
+    }
 }
