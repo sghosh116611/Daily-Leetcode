@@ -49,25 +49,25 @@ class Solution
     {
         // Your code here
         Arrays.sort(arr, (Job j1, Job j2) -> j2.profit - j1.profit);
-        int maxDeadline = Integer.MIN_VALUE;
-        for(Job job: arr)
-            maxDeadline = Math.max(maxDeadline,job.deadline);
-        int[] jobsScheduled = new int[maxDeadline + 1]; int profit = 0,countJob = 0;
-        for (int i = 1; i <= maxDeadline; i++) {
-            jobsScheduled[i] = -1;
-        }
+        boolean[] slot;
+        int maxDeadLine = 0;
         for(Job job : arr){
-            for(int j = job.deadline; j > 0; j--){
-                if(jobsScheduled[j] == -1){
-                    jobsScheduled[j] = job.id;
-                    profit += job.profit;
-                    countJob++;
-                    break;
-                } 
-            }
-            
+            maxDeadLine = Math.max(job.deadline,maxDeadLine);
         }
-        return new int[]{countJob,profit};
+        slot = new boolean[maxDeadLine];
+        
+        int profit = 0, count = 0;
+        for(Job job : arr){
+            for(int j = job.deadline - 1; j >= 0; j--){
+                if(!slot[j]){
+                    slot[j] = true;
+                    count++;
+                    profit += job.profit;
+                    break;
+                }
+            }
+        }
+        return new int[]{count,profit};
     }
 }
 
