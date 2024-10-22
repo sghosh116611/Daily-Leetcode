@@ -30,22 +30,20 @@ class GFG {
 
 // User function Template for Java//User function Template for Java
 class Solution {
+    ArrayList<Integer> result = new ArrayList<>();
     ArrayList<Integer> subsetSums(ArrayList<Integer> arr, int n) {
         // code here
-        ArrayList<Integer> result = new ArrayList<>();
-        helper(arr,0,0,n,result);
-        
+        fn(arr,0,0,n);
         return result;
     }
     
-    public void helper(ArrayList<Integer> arr, int idx, int sum, int n, ArrayList<Integer> result){
+    public void fn(ArrayList<Integer> arr, int idx, int sum, int n){
         if(idx == n){
             result.add(sum);
             return;
         }
-        
-        helper(arr,idx + 1, sum + arr.get(idx), n, result);
-        
-        helper(arr,idx + 1, sum, n, result);
+            
+        fn(arr,idx + 1, sum + arr.get(idx), n);
+        fn(arr,idx + 1, sum, n);
     }
 }
