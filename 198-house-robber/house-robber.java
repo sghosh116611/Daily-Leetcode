@@ -1,83 +1,53 @@
 class Solution {
     public int rob(int[] nums) {
-        int dp[] = new int[nums.length];
+        //return f(nums,0);
+
+        // int[] dp = new int[nums.length];
+        // Arrays.fill(dp,-1);
+
+        // return f(nums,0,dp);
+
+        int[] dp = new int[nums.length + 1];
         Arrays.fill(dp,-1);
 
-        // Recurrence
-        //return f(nums.length -1 , nums); 
-
-        // Memoization
-        //return fMemoization(nums.length - 1, nums,dp);
-
-        // Tabulation
-        //return fTabulation(nums.length - 1, nums,dp);
-
-        // Space optimisation
-        return fTabulationSpaceOptimise(nums.length - 1, nums,dp);
+        return f(nums,0,dp);
     }
 
-    public int f(int idx, int[] nums){
-        if(idx == 0)
-            return nums[0];
-        
-        if(idx == -1)
-            return 0;
-        
-        int notTake = 0 + f(idx - 1,nums);
-        int take = nums[idx] + f(idx - 2,nums);
+    // int f(int[] nums, int idx){
+    //     if(idx >= nums.length) return 0;
 
-        return Math.max(notTake,take);
-    }
+    //     int take = nums[idx] + f(nums,idx + 2);
+    //     int notTake = f(nums,idx + 1);
 
-    public int fMemoization(int idx, int[] nums, int[] dp){
-        if(idx == 0)
-            return nums[idx];
-        
-        if(idx == -1)
-            return 0;
-        
-        if(dp[idx] != -1)
-            return dp[idx];
+    //     return Math.max(take,notTake);
+    // }
 
-        int notTake = 0 + f(idx - 1,nums);
-        int take = nums[idx] + f(idx - 2,nums);
+    // int f(int[] nums, int idx, int[] dp){
+    //     if(idx >= nums.length) return 0;
 
-        return dp[idx] = Math.max(notTake,take);
-    }
+    //     if(dp[idx] != -1)
+    //         return dp[idx];
 
-    public int fTabulation(int idx, int[] nums, int[] dp){
-        dp[0] = nums[0];
+    //     int take = nums[idx] + f(nums,idx + 2,dp);
+    //     int notTake = f(nums,idx + 1,dp);
 
-        for(int i = 1; i <= idx; i++){
-            int notTake = 0 + dp[i - 1];
-            
+    //     return dp[idx] = Math.max(take,notTake);
+    // }
+
+    int f(int[] nums, int idx, int[] dp){
+        if(idx >= nums.length) return 0;
+        dp[nums.length] = 0;
+
+        for(int i = nums.length - 1; i >= 0; i--){
             int take = nums[i];
-            if(i > 1)
-                take += dp[i - 2];
+            if(i + 2 <= nums.length)
+                take += dp[i + 2];
+
+            int notTake = dp[i + 1];
             
-            dp[i] = Math.max(notTake,take);
+            dp[i] = Math.max(take,notTake);
         }
 
-        return dp[idx];
-    }
-
-    public int fTabulationSpaceOptimise(int idx, int[] nums, int[] dp){
-        int prev = nums[0];
-        int prev2 = 0;
-        int current = 0;
-
-        for(int i = 1; i <= idx; i++){
-            int notTake = 0 + prev;
-            
-            int take = nums[i];
-            if(i > 1)
-                take += prev2;
-            
-            current = Math.max(notTake,take);
-
-            prev2 = prev;
-            prev = current;
-        }
-        return prev;
+        return dp[0];
     }
 }
