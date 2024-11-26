@@ -10,7 +10,7 @@ class Solution {
         int[] dp = new int[nums.length + 1];
         Arrays.fill(dp,-1);
 
-        return f(nums,0,dp);
+        return f(nums,dp);
     }
 
     // int f(int[] nums, int idx){
@@ -34,8 +34,7 @@ class Solution {
     //     return dp[idx] = Math.max(take,notTake);
     // }
 
-    int f(int[] nums, int idx, int[] dp){
-        if(idx >= nums.length) return 0;
+    int f(int[] nums, int[] dp){
         dp[nums.length] = 0;
 
         for(int i = nums.length - 1; i >= 0; i--){
