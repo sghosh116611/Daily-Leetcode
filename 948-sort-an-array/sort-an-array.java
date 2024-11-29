@@ -1,19 +1,20 @@
 class Solution {
     public int[] sortArray(int[] nums) {
-        mergeSort(nums);
+        sort(nums);
         return nums;
     }
 
-    public void mergeSort(int[] nums){
-        sort(nums,0,nums.length - 1);
+    public void sort(int[] nums){
+        //mergeSort(nums,0,nums.length - 1);
+        quickSort(nums,0,nums.length - 1);
     }
 
-    public void sort(int[] nums, int low, int high){
+    public void mergeSort(int[] nums, int low, int high){
         if(low < high){
             int mid = (low + high) / 2;
 
-            sort(nums,low,mid);
-            sort(nums,mid + 1,high);
+            mergeSort(nums,low,mid);
+            mergeSort(nums,mid + 1,high);
 
             merge(nums,low, mid, high);
         }
@@ -50,5 +51,38 @@ class Solution {
         while(j < n2){
             arr[k++] = right[j++];
         }
+    }
+
+    public void quickSort(int[] arr, int low, int high){
+        if(low < high){
+            
+            int pvIdx = partition(arr, low, high);
+
+            quickSort(arr,low,pvIdx - 1);
+            quickSort(arr,pvIdx + 1, high);
+        }
+    }
+
+    public int partition(int[] arr, int low, int high){
+        int pvIdx = new Random().nextInt(high - low + 1) + low;
+        int pivot = arr[pvIdx];
+
+        swap(arr, pvIdx, high);
+
+        int i = low - 1;
+        for(int j = low; j <= high - 1; j++){
+            if(arr[j] < pivot){
+                i++;
+                swap(arr,i,j);
+            }
+        }
+        swap(arr,i + 1,high);
+        return i + 1;
+    }
+
+    private void swap(int[] nums, int idx1, int idx2){
+        int temp = nums[idx1];
+        nums[idx1] = nums[idx2];
+        nums[idx2] = temp;
     }
 }
