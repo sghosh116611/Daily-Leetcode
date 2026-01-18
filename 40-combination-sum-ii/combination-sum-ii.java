@@ -8,31 +8,20 @@ class Solution {
 
     private void func(int idx, int[] nums, int target, List<List<Integer>> ans, 
     List<Integer> ds){
-        if(target == 0){
+        if(target == 0) {
             ans.add(new ArrayList<>(ds));
             return;
         }
-        for(int i = idx; i < nums.length; i++){
-            if(i != idx && nums[i] == nums[i - 1]) continue;
-
-            // Take
-            if(nums[i] <= target){
-                ds.add(nums[i]);
-                func(i + 1, nums, target - nums[i], ans, ds);
-                ds.remove(ds.size() - 1);
-            }
             
 
-            // Not take
-            //func(i + 1, nums, target, ans, ds);
+        for(int i = idx; i < nums.length; i++){
+            if(i > idx && nums[i] == nums[i - 1]) continue;
+            if(nums[i] > target) break;
+
+            ds.add(nums[i]);
+            func(i + 1,nums,target - nums[i],ans, ds);
+            ds.remove(ds.size() - 1);
         }
-        // // Base
-        // if(idx == nums.length - 1){
-        //     if(target == 0){
-        //         ans.add(new ArrayList<>(ds));
-        //     }
-        //     return;
-        // }
         
     }
 }
