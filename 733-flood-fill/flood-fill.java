@@ -1,27 +1,32 @@
 class Solution {
     public int[][] floodFill(int[][] image, int sr, int sc, int color) {
-        int sp = image[sr][sc];
-        Queue<Point> queue = new LinkedList<>();
-        queue.offer(new Point(sr,sc));
-        boolean[][] visited = new boolean[image.length][image[0].length];
-        int[][] idxArr = {{0,-1},{0,1},{-1,0},{1,0}};
+        int m = image.length;
+        int n = image[0].length;
+        Queue<Pair> queue = new LinkedList<>();
 
+        int ogColor = image[sr][sc];
 
-        while(!queue.isEmpty()){
-            Point point = queue.poll();
-            int i = point.i;
-            int j = point.j;
-            visited[i][j] = true;
-            image[i][j] = color;
+        if(ogColor == color) return image;
+        
+        queue.add(new Pair(sr,sc));
+        image[sr][sc] = color;
 
-            for(int[] idx : idxArr){
-                if(i + idx[0] < image.length && i + idx[0] >= 0
-                    && j + idx[1] < image[0].length && j + idx[1] >= 0
-                    && !visited[i + idx[0]][j + idx[1]]
-                    && image[i + idx[0]][j + idx[1]] == sp
-                ){
-                    queue.offer(new Point(i + idx[0],j + idx[1]));
-                }
+        while(!queue.isEmpty()) {
+            Pair node = queue.poll();
+            int i1 = node.i;
+            int j1 = node.j;
+
+            int[][] trav = {{0,1}, {0,-1}, {-1,0},{1,0}};
+
+            for(int k = 0; k <= 3; k++) {
+                int i2 = i1 + trav[k][0];
+                int j2 = j1 + trav[k][1];
+
+                if(i2 >= 0 && i2 < m && j2 >= 0 && j2 < n
+                    && image[i2][j2] == ogColor) {
+                        image[i2][j2] = color;
+                        queue.add(new Pair(i2,j2));
+                    }
             }
         }
 
@@ -29,11 +34,11 @@ class Solution {
     }
 }
 
-class Point{
-    int i;
+class Pair {
+    int i ;
     int j;
 
-    Point(int i, int j){
+    Pair(int i, int j) {
         this.i = i;
         this.j = j;
     }
