@@ -1,10 +1,9 @@
 class Solution {
     public int orangesRotting(int[][] grid) {
-        int fresh = 0;
+        Queue<Pair> queue = new LinkedList<>();
         int m = grid.length;
         int n = grid[0].length;
-
-        Queue<Pair> queue = new LinkedList<>();
+        int fresh = 0, min = 0;
 
         for(int i = 0; i < m; i++) {
             for(int j = 0; j < n; j++) {
@@ -16,45 +15,40 @@ class Solution {
             }
         }
 
-        int mins = 0;
-        System.out.println(fresh);
-
         if(fresh == 0) return 0;
 
+        int trav[][] = {{0,1},{0,-1},{1,0},{-1,0}};
         while(!queue.isEmpty()) {
             int level = queue.size();
-            while(level-- > 0) {
-                Pair rottenNode = queue.poll();
-                int i = rottenNode.i;
-                int j = rottenNode.j;
+            while(level-- != 0) {
+                Pair pop = queue.poll();
+                int i = pop.x;
+                int j = pop.y;
 
-                int[][] trav = {{0,1},{0,-1},{-1,0},{1,0}};
+                for(int tra[] : trav) {
+                    int x = i + tra[0];
+                    int y = j + tra[1];
 
-                for(int k = 0; k <= 3; k++) {
-                    int i1 = i + trav[k][0];
-                    int j1 = j + trav[k][1];
-                    if(i1 >= 0 && i1 < m && j1 >= 0 && j1 < n
-                        && grid[i1][j1] == 1) {
-                        queue.add(new Pair(i1,j1));
-                        grid[i1][j1] = 2;
+                    if(x >= 0 && x < m && y >= 0 && y < n &&
+                        grid[x][y] == 1) {
+                        grid[x][y] = 2;
+                        queue.add(new Pair(x,y));
                         fresh--;
                     }
                 }
             }
-            mins++;
+            min++;
         }
 
-        System.out.println(fresh);
-        return fresh == 0 ? mins -1 : -1;
+        return fresh == 0 ? min - 1 : -1;
     }
 }
 
 class Pair {
-    int i;
-    int j;
-
-    Pair(int i, int j) {
-        this.i = i;
-        this.j = j;
+    int x;
+    int y;
+    Pair(int x, int y) {
+        this.x = x;
+        this.y = y;
     }
 }
