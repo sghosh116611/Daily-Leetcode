@@ -3,52 +3,62 @@ class Solution {
         int m = board.length;
         int n = board[0].length;
 
-        boolean[][] visited = new boolean[m][n];
+        for(int i = 0; i < m; i++) {
+            if(board[i][0] == 'O') {
+                bfs(i,0,board);
+            }
+            if(board[i][n - 1] == 'O') {
+                bfs(i,n - 1,board);
+            }
+        }
 
         for(int j = 0; j < n; j++) {
-            if(board[0][j] == 'O' && !visited[0][j]) {
-                dfs(board,0,j,visited);
+            if(board[0][j] == 'O') {
+                bfs(0,j,board);
             }
-
-            if(board[m - 1][j] == 'O' && !visited[m - 1][j]) {
-                dfs(board,m - 1,j,visited);
+            if(board[m - 1][j] == 'O') {
+                bfs(m - 1,j,board);
             }
         }
 
         for(int i = 0; i < m; i++) {
-            if(board[i][0] == 'O' && !visited[i][0]) {
-                dfs(board,i,0,visited);
+            for(int j = 0; j < n; j++) {
+                System.out.print(board[i][j] + " ");
             }
-
-            if(board[i][n - 1] == 'O' && !visited[i][n - 1]) {
-                dfs(board,i,n - 1,visited);
-            }
+            System.out.println();
         }
 
-        for(int i = 0 ; i < m; i++) {
+        for(int i = 0; i < m; i++) {
             for(int j = 0; j < n; j++) {
-                if(board[i][j] == 'O' && !visited[i][j]) {
+                if(board[i][j] == '#')
+                    board[i][j] = 'O';
+                else if(board[i][j] == 'O')
                     board[i][j] = 'X';
-                }
             }
         }
     }
 
-    private void dfs(char[][] board, int row, int col, boolean[][] visited) {
+    public void bfs(int i, int j, char[][] board) {
+        Queue<int[]> queue = new LinkedList<>();
+        queue.add(new int[]{i,j});
+        board[i][j] = '#';
+
         int m = board.length;
         int n = board[0].length;
-
-        visited[row][col] = true;
-        int[][] trav = {{0,1},{0,-1},{1,0},{-1,0}};
-
-        for(int i = 0; i <= 3; i++) {
-            int nrow = row + trav[i][0];
-            int ncol = col + trav[i][1];
-            if(nrow >= 0 && nrow < m && ncol >= 0 && ncol < n
-                && !visited[nrow][ncol] && board[nrow][ncol] == 'O') {
-                dfs(board, nrow, ncol, visited);
-            }
+        
+        int[][] traverse = {{0,1},{0,-1},{1,0},{-1,0}};
+        while(!queue.isEmpty()) {
+            int[] pop = queue.poll();
             
+            for(int trav[] : traverse) {
+                int x = pop[0] + trav[0];
+                int y = pop[1] + trav[1];
+
+                if(x >= 0 && x < m && y >= 0 && y < n && board[x][y] == 'O') {
+                    board[x][y] = '#';
+                    queue.add(new int[]{x,y});
+                }
+            }
         }
     }
 }
